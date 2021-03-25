@@ -1,6 +1,8 @@
 package net.ethermod
 
 import net.ethermod.client.blocks.BlockHandler
+import net.ethermod.client.items.ItemHandler
+import net.minecraft.item.Item
 import net.minecraft.block.Block
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
@@ -25,9 +27,8 @@ object Ether {
             event.description()
         }
 
-        @JvmStatic
-        @SubscribeEvent fun registerBlocks(event: RegistryEvent.Register<Block>) {BlockHandler.processBlocks(event.registry)}
-
+        @SubscribeEvent fun registerBlocks(e: RegistryEvent.Register<Block>) {BlockHandler.processBlocks(e.registry)}
+        @SubscribeEvent fun registerItems(e: RegistryEvent.Register<Item>) {ItemHandler.processItems(e.registry)}
     }
 }
 

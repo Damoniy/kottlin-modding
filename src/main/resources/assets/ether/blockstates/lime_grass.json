@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "snowy=false": [
+      {
+        "model": "ether:block/lime_grass"
+      },
+      {
+        "model": "ether:block/lime_grass",
+        "y": 90
+      },
+      {
+        "model": "ether:block/lime_grass",
+        "y": 180
+      },
+      {
+        "model": "ether:block/lime_grass",
+        "y": 270
+      }
+    ],
+    "snowy=true": {
+      "model": "ether:block/lime_grass_snowy"
+    }
+  }
+}

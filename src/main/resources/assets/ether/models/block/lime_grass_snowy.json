@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "ether:blocks/blue_dirt",
+    "bottom": "ether:blocks/blue_dirt",
+    "side": "ether:blocks/lime_grass_snowy",
+    "particle": "ether:blocks/lime_grass_snowy"
+  }
+}

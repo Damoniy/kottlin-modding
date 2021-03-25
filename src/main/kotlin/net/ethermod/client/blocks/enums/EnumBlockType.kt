@@ -1,4 +1,4 @@
-package net.ethermod.client.blocks
+package net.ethermod.client.blocks.enums
 
 import net.minecraft.block.*
 import net.minecraft.block.material.Material
