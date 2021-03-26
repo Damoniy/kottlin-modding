@@ -1,6 +1,5 @@
 package net.ethermod.client.blocks
 
-import net.ethermod.Ether
 import net.minecraft.block.*
 import net.minecraft.tags.FluidTags
 import net.minecraft.util.Direction
