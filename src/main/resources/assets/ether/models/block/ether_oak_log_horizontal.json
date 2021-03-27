@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "ether:blocks/ether_oak_log_top",
+    "side": "ether:blocks/ether_oak_log_side"
+  }
+}

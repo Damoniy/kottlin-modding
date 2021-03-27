@@ -14,6 +14,7 @@ enum class EnumBlockType(val props: Properties){
     WOOD(Properties.create(Material.WOOD, MaterialColor.WOOD).sound(SoundType.WOOD).hardnessAndResistance(2.5F, 8F)),
     PORTAL(Properties.create(Material.PORTAL, MaterialColor.AIR).doesNotBlockMovement().tickRandomly().sound(SoundType.GLASS).hardnessAndResistance(-1.0F)),
     FOLIAGE(Properties.create(Material.LEAVES, MaterialColor.FOLIAGE).sound(SoundType.PLANT).hardnessAndResistance(0.2F).tickRandomly()),
-    LAMP(Properties.create(Material.GLASS, MaterialColor.AIR).sound(SoundType.GLASS).hardnessAndResistance(0.7F).setLightLevel{state: BlockState -> 14}),
+    LAMP(Properties.create(Material.GLASS, MaterialColor.AIR).sound(SoundType.GLASS).hardnessAndResistance(0.7F).setLightLevel{14}),
     GLASS(Properties.create(Material.GLASS).hardnessAndResistance(0.3F).sound(SoundType.GLASS).notSolid())
+
 }
