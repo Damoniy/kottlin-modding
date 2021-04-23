@@ -1,6 +1,8 @@
 package net.ethermod.client.blocks
 
-import net.minecraft.block.*
+import net.minecraft.block.BlockState
+import net.minecraft.block.Blocks
+import net.minecraft.block.SnowBlock
 import net.minecraft.tags.FluidTags
 import net.minecraft.util.Direction
 import net.minecraft.util.math.BlockPos
@@ -45,13 +47,13 @@ abstract class SnowyLimeBlock(p: Properties, blockName: String): SnowyBlueDirt(p
                     3
                 )
             ) return  // Forge: prevent loading unloaded chunks when checking neighbor's light and spreading
-            worldIn.setBlockState(pos, Blocks.DIRT.defaultState)
+            worldIn.setBlockState(pos, BlockHandler.blueDirt_block.defaultState)
         } else {
             if (worldIn.getLight(pos.up()) >= 9) {
                 val blockstate = defaultState
                 for (i in 0..3) {
                     val blockpos = pos.add(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1)
-                    if (worldIn.getBlockState(blockpos).isIn(Blocks.DIRT) && isSnowyAndNotUnderwater(
+                    if (worldIn.getBlockState(blockpos).isIn(BlockHandler.blueDirt_block) && isSnowyAndNotUnderwater(
                             blockstate,
                             worldIn,
                             blockpos

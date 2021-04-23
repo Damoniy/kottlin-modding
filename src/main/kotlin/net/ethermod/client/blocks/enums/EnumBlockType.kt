@@ -15,6 +15,6 @@ enum class EnumBlockType(val props: Properties){
     PORTAL(Properties.create(Material.PORTAL, MaterialColor.AIR).doesNotBlockMovement().tickRandomly().sound(SoundType.GLASS).hardnessAndResistance(-1.0F)),
     FOLIAGE(Properties.create(Material.LEAVES, MaterialColor.FOLIAGE).sound(SoundType.PLANT).hardnessAndResistance(0.2F).tickRandomly()),
     LAMP(Properties.create(Material.GLASS, MaterialColor.AIR).sound(SoundType.GLASS).hardnessAndResistance(0.7F).setLightLevel{14}),
-    GLASS(Properties.create(Material.GLASS).hardnessAndResistance(0.3F).sound(SoundType.GLASS).notSolid())
-
+    GLASS(Properties.create(Material.GLASS).hardnessAndResistance(0.3F).sound(SoundType.GLASS).notSolid()),
+    DAMONIY_GENERIC_PLANTS(Properties.create(Material.TALL_PLANTS, MaterialColor.FOLIAGE).sound(SoundType.PLANT).zeroHardnessAndResistance().doesNotBlockMovement()),
 }

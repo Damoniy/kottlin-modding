@@ -3,7 +3,6 @@ package net.ethermod.client.blocks
 import net.ethermod.client.blocks.enums.EnumBlockType
 import net.ethermod.utils.annotations.Item
 import net.minecraft.block.BlockState
-import net.minecraft.block.Blocks
 import net.minecraft.block.IGrowable
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockReader
@@ -24,7 +23,7 @@ class LimeGrassBlock(ebt: EnumBlockType, blockName: String): SnowyLimeBlock(ebt.
 
     override fun grow(worldIn: ServerWorld, rand: Random, pos: BlockPos, state: BlockState?) {
         val blockpos = pos.up()
-        val blockstate = BlockHandler.limegrass_block.defaultState
+        val blockstate = BlockHandler.limeTallGrass_block.defaultState
         label48@ for (i in 0..127) {
             var blockpos1 = blockpos
             for (j in 0 until i / 16) {
@@ -40,7 +39,7 @@ class LimeGrassBlock(ebt: EnumBlockType, blockName: String): SnowyLimeBlock(ebt.
             if (blockstate2.isIn(blockstate.block) && rand.nextInt(10) == 0) {
                 (blockstate.block as IGrowable).grow(worldIn, rand, blockpos1, blockstate2)
             }
-            if (blockstate2.isAir) {
+            if (blockstate2.isAir()) {
                 var blockstate1: BlockState
                 blockstate1 =  blockstate
                 }

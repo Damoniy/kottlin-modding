@@ -12,7 +12,7 @@ object ItemHandler {
     @JvmStatic val ITEMS: ArrayList<Item> = arrayListOf(purpleGlowstoneDust)
     @JvmStatic fun processItems(r: IForgeRegistry<Item>) { println("FORGE REGISTRY IS IN ITEMS NOW"); ITEMS.forEach { r.register(it)}}
 
-    fun generateItemForBlock(b: Block): Item {
+    fun generateItemFromBlock(b: Block): Item {
         val itemBlock = ItemBlock(b, BLOCKS);
             ITEMS.add(itemBlock)
         return itemBlock;

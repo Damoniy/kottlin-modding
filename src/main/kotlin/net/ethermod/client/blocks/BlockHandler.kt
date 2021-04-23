@@ -3,24 +3,38 @@ package net.ethermod.client.blocks
 import net.ethermod.client.blocks.enums.EnumBlockType.*
 import net.ethermod.client.items.ItemHandler
 import net.ethermod.utils.annotations.Item
+import net.ethermod.utils.annotations.Translucent
 import net.minecraft.block.Block
+import net.minecraft.client.renderer.RenderType
+import net.minecraft.client.renderer.RenderTypeLookup
 import net.minecraftforge.registries.IForgeRegistry
 import kotlin.reflect.full.hasAnnotation
-import net.minecraft.block.Blocks
 
 object BlockHandler {
+    val blueDirt_block = BlueDirtBlock(GROUND, "blue_dirt")
+    val limeGrass_block = LimeGrassBlock(GRASS, "lime_grass")
+    val limeTallGrass_block = LimeTallGrassBlock(DAMONIY_GENERIC_PLANTS, "lime_tall_grass")
 
-    val bluedirt_block = BlueDirtBlock(GROUND, "blue_dirt")
-    val limegrass_block = LimeGrassBlock(GRASS, "lime_grass")
-    val whitelog_block = DamoniyLogBlock(WOOD, "white_log")
-    val etheroaklog_block = DamoniyLogBlock(WOOD, "ether_oak_log")
-    val purpleglowstone_block = LampBlock(LAMP, "purple_glowstone")
+    val whiteLog_block = DamoniyLogBlock(WOOD, "white_log")
+    val limePlanks_block = GenericBlock(PLANKS, "white_planks")
 
-    @JvmStatic val BLOCKS: ArrayList<Block> = arrayListOf(bluedirt_block, limegrass_block, whitelog_block,
-    etheroaklog_block, purpleglowstone_block)
-    @JvmStatic fun processBlocks(r: IForgeRegistry<Block>){ println("FORGE REGISTRY IS IN BLOCKS NOW"); BLOCKS.forEach{r.register(it); if(it::class.hasAnnotation<Item>()) createItemBlock(it) } }
+    val etherOakLog_block = DamoniyLogBlock(WOOD, "ether_oak_log")
+    val purplePlanks_block = GenericBlock(PLANKS, "purple_planks")
+
+    val purpleGlowstone_block = LampBlock(LAMP, "purple_glowstone")
+
+    private val BLOCKS: ArrayList<Block> = arrayListOf(blueDirt_block, limeGrass_block, whiteLog_block,
+    etherOakLog_block, purpleGlowstone_block, limeTallGrass_block, limePlanks_block, purplePlanks_block
+
+    )
+    @JvmStatic fun processBlocks(r: IForgeRegistry<Block>){ BLOCKS.forEach{r.register(it); if(it::class.hasAnnotation<Item>()) createItemBlock(it);
+        if(it::class.hasAnnotation<Translucent>()) setTranslucent(it)}}
 
     private fun createItemBlock(b: Block){
-        ItemHandler.generateItemForBlock(b)
+        ItemHandler.generateItemFromBlock(b)
+    }
+
+    private fun setTranslucent(b: Block){
+        RenderTypeLookup.setRenderLayer(b, RenderType.getTranslucent())
     }
 }
