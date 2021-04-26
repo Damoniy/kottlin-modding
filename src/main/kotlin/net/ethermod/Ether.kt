@@ -7,6 +7,7 @@ import net.ethermod.client.blocks.BlockHandler
 import net.ethermod.client.items.ItemHandler
 import net.ethermod.utils.annotations.Logger
 import net.minecraft.block.Block
+import net.minecraft.client.gui.screen.inventory.ContainerScreen
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.EquipmentSlotType
@@ -29,6 +30,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 object Ether {
     const val MODID = "ether"
 
+    private val INVENTORY_BACKGROUND = resourceLocation("/textures/gui/container/inventory.png")
+    private val SLOT_WING = ResourceLocation(MODID,"/textures/gui/container/slot/wing")
+    private val SLOT_RING = resourceLocation("textures/items/empty_armor_slot_boots.png")
+    private val SLOT_PENDANT = resourceLocation("gui/container/pendant")
+    private val SLOT_TEXTURE = arrayOf(SLOT_WING, SLOT_RING, SLOT_PENDANT)
+
     @Mod.EventBusSubscriber(modid = Ether.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     object RegistrationHandler {
 
@@ -39,6 +46,7 @@ object Ether {
 
         @SubscribeEvent
         fun init(event: FMLCommonSetupEvent) {
+
             event.enqueueWork {
                 CapabilityHandler.register()
             }
@@ -57,38 +65,45 @@ object Ether {
                 val player = event.entity as PlayerEntity
                 val container = player.container
                 val inventory = player.inventory
-
                 val accessoryInventory = NonNullList.withSize(3, ItemStack.EMPTY)
+
+                ContainerScreen.INVENTORY_BACKGROUND = INVENTORY_BACKGROUND
+
                 inventory.allInventories = ImmutableList.of(inventory.armorInventory, inventory.mainInventory, inventory.offHandInventory, accessoryInventory)
 
-                container.addSlot(object : Slot(inventory, 41, 77, 44) {
-                    override fun getSlotStackLimit(): Int {
-                        return 1
-                    }
+                for(slotNumber in 0..2) {
+                    container.addSlot(object : Slot(inventory, 40 + slotNumber, 77, 44  - slotNumber * 18) {
+                        override fun getSlotStackLimit(): Int {
+                            return 1
+                        }
 
-                    override fun isItemValid(p_75214_1_: ItemStack): Boolean {
-                        return p_75214_1_.canEquip(EquipmentSlotType.CHEST, player)
-                    }
+                        override fun isItemValid(p_75214_1_: ItemStack): Boolean {
+                            return p_75214_1_.canEquip(EquipmentSlotType.CHEST, player)
+                        }
 
-                    override fun canTakeStack(p_82869_1_: PlayerEntity): Boolean {
-                        val itemstack = this.stack
-                        return if (!itemstack.isEmpty && !p_82869_1_.isCreative && EnchantmentHelper.hasBindingCurse(
-                                itemstack
+                        override fun canTakeStack(p_82869_1_: PlayerEntity): Boolean {
+                            val itemstack = this.stack
+                            return if (!itemstack.isEmpty && !p_82869_1_.isCreative && EnchantmentHelper.hasBindingCurse(
+                                    itemstack
+                                )
+                            ) false else super.canTakeStack(p_82869_1_)
+                        }
+
+                        @OnlyIn(Dist.CLIENT)
+                        override fun getBackground(): Pair<ResourceLocation, ResourceLocation>? {
+                            return Pair.of(
+                                PlayerContainer.LOCATION_BLOCKS_TEXTURE,
+                                SLOT_PENDANT
                             )
-                        ) false else super.canTakeStack(p_82869_1_)
-                    }
-
-                    @OnlyIn(Dist.CLIENT)
-                    override fun getBackground(): Pair<ResourceLocation, ResourceLocation>? {
-                        return Pair.of(PlayerContainer.LOCATION_BLOCKS_TEXTURE, PlayerContainer.EMPTY_ARMOR_SLOT_SHIELD)
-                    }
-                })
+                        }
+                    })
+                }
             }
         }
     }
 
-    fun resourceLocation(msg: String): ResourceLocation {
-        return ResourceLocation(MODID, msg)
+    fun resourceLocation(path: String): ResourceLocation {
+        return ResourceLocation(MODID, path)
     }
 }
 
