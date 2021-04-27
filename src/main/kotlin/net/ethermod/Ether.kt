@@ -1,24 +1,18 @@
 package net.ethermod
 
 import com.google.common.collect.ImmutableList
-import com.mojang.datafixers.util.Pair
 import net.ethermod.capabilities.CapabilityHandler
 import net.ethermod.client.blocks.BlockHandler
+import net.ethermod.client.inventory.SlotWing
 import net.ethermod.client.items.ItemHandler
 import net.ethermod.utils.annotations.Logger
 import net.minecraft.block.Block
 import net.minecraft.client.gui.screen.inventory.ContainerScreen
-import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.inventory.EquipmentSlotType
-import net.minecraft.inventory.container.PlayerContainer
-import net.minecraft.inventory.container.Slot
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
-import net.minecraftforge.api.distmarker.Dist
-import net.minecraftforge.api.distmarker.OnlyIn
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
@@ -32,11 +26,11 @@ object Ether {
 
     private val INVENTORY_BACKGROUND = resourceLocation("/textures/gui/container/inventory.png")
     private val SLOT_WING = ResourceLocation(MODID,"/textures/gui/container/slot/wing")
-    private val SLOT_RING = resourceLocation("textures/items/empty_armor_slot_boots.png")
-    private val SLOT_PENDANT = resourceLocation("gui/container/pendant")
+    private val SLOT_RING = resourceLocation("/textures/gui/container/ring.png")
+    private val SLOT_PENDANT = resourceLocation("item/pendant.png")
     private val SLOT_TEXTURE = arrayOf(SLOT_WING, SLOT_RING, SLOT_PENDANT)
 
-    @Mod.EventBusSubscriber(modid = Ether.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     object RegistrationHandler {
 
         init{
@@ -72,31 +66,7 @@ object Ether {
                 inventory.allInventories = ImmutableList.of(inventory.armorInventory, inventory.mainInventory, inventory.offHandInventory, accessoryInventory)
 
                 for(slotNumber in 0..2) {
-                    container.addSlot(object : Slot(inventory, 40 + slotNumber, 77, 44  - slotNumber * 18) {
-                        override fun getSlotStackLimit(): Int {
-                            return 1
-                        }
-
-                        override fun isItemValid(p_75214_1_: ItemStack): Boolean {
-                            return p_75214_1_.canEquip(EquipmentSlotType.CHEST, player)
-                        }
-
-                        override fun canTakeStack(p_82869_1_: PlayerEntity): Boolean {
-                            val itemstack = this.stack
-                            return if (!itemstack.isEmpty && !p_82869_1_.isCreative && EnchantmentHelper.hasBindingCurse(
-                                    itemstack
-                                )
-                            ) false else super.canTakeStack(p_82869_1_)
-                        }
-
-                        @OnlyIn(Dist.CLIENT)
-                        override fun getBackground(): Pair<ResourceLocation, ResourceLocation>? {
-                            return Pair.of(
-                                PlayerContainer.LOCATION_BLOCKS_TEXTURE,
-                                SLOT_PENDANT
-                            )
-                        }
-                    })
+                    container.addSlot(SlotWing(inventory, 40 + slotNumber, 77, 44  - slotNumber * 18))
                 }
             }
         }
