@@ -3,16 +3,19 @@ package net.ethermod
 import com.google.common.collect.ImmutableList
 import net.ethermod.capabilities.CapabilityHandler
 import net.ethermod.client.blocks.BlockHandler
-import net.ethermod.client.inventory.SlotWing
+import net.ethermod.client.inventory.SlotAccessories
+import net.ethermod.client.inventory.enum.SlotType
 import net.ethermod.client.items.ItemHandler
 import net.ethermod.utils.annotations.Logger
 import net.minecraft.block.Block
 import net.minecraft.client.gui.screen.inventory.ContainerScreen
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.inventory.container.PlayerContainer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
@@ -25,10 +28,7 @@ object Ether {
     const val MODID = "ether"
 
     private val INVENTORY_BACKGROUND = resourceLocation("/textures/gui/container/inventory.png")
-    private val SLOT_WING = ResourceLocation(MODID,"/textures/gui/container/slot/wing")
-    private val SLOT_RING = resourceLocation("/textures/gui/container/ring.png")
-    private val SLOT_PENDANT = resourceLocation("item/pendant.png")
-    private val SLOT_TEXTURE = arrayOf(SLOT_WING, SLOT_RING, SLOT_PENDANT)
+
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
     object RegistrationHandler {
@@ -48,6 +48,15 @@ object Ether {
             event.description()
         }
 
+        @SubscribeEvent
+        fun sendTexturesToMinecraftAtlas(event: TextureStitchEvent.Pre){
+            if(event.map.textureLocation == PlayerContainer.LOCATION_BLOCKS_TEXTURE){
+                for(slot in SlotType.values()){
+                    event.addSprite(slot.texture)
+                }
+            }
+        }
+
         @SubscribeEvent fun registerBlocks(e: RegistryEvent.Register<Block>) {BlockHandler.processBlocks(e.registry)}
         @SubscribeEvent fun registerItems(e: RegistryEvent.Register<Item>) {ItemHandler.processItems(e.registry)}
     }
@@ -65,8 +74,8 @@ object Ether {
 
                 inventory.allInventories = ImmutableList.of(inventory.armorInventory, inventory.mainInventory, inventory.offHandInventory, accessoryInventory)
 
-                for(slotNumber in 0..2) {
-                    container.addSlot(SlotWing(inventory, 40 + slotNumber, 77, 44  - slotNumber * 18))
+                for(slot in SlotType.values()) {
+                    container.addSlot(SlotAccessories(slot, inventory, 40 + slot.number, 77, 44  - (slot.number - 1) * 18))
                 }
             }
         }
