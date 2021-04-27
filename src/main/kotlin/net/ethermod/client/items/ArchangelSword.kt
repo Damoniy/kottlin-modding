@@ -2,7 +2,7 @@ package net.ethermod.client.items
 
 import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Multimap
-import net.ethermod.client.blocks.enums.EnumItemType
+import net.ethermod.client.items.enums.EnumItemType
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.block.material.Material
@@ -20,7 +20,7 @@ import net.minecraft.tags.BlockTags
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 
-class ArchangelSword(tier: IItemTier, var damage: Float, attackSpeed: Float, enum: EnumItemType): TieredItem(tier, enum.p), IVanishable{
+class ArchangelSword(tier: IItemTier, var damage: Float, attackSpeed: Float, enum: EnumItemType): TieredItem(tier, enum.props), IVanishable{
 
     private var attributeModifiers: Multimap<Attribute, AttributeModifier>? = null
     val playerClass = ""

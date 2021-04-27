@@ -19,6 +19,7 @@ import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
+import net.minecraftforge.event.entity.living.LivingEvent
 import net.minecraftforge.eventbus.api.SubscribeEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
@@ -28,6 +29,7 @@ object Ether {
     const val MODID = "ether"
 
     private val INVENTORY_BACKGROUND = resourceLocation("/textures/gui/container/inventory.png")
+    private val accessoryInventory = NonNullList.withSize(3, ItemStack.EMPTY)
 
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -68,7 +70,6 @@ object Ether {
                 val player = event.entity as PlayerEntity
                 val container = player.container
                 val inventory = player.inventory
-                val accessoryInventory = NonNullList.withSize(3, ItemStack.EMPTY)
 
                 ContainerScreen.INVENTORY_BACKGROUND = INVENTORY_BACKGROUND
 
@@ -76,6 +77,18 @@ object Ether {
 
                 for(slot in SlotType.values()) {
                     container.addSlot(SlotAccessories(slot, inventory, 40 + slot.number, 77, 44  - (slot.number - 1) * 18))
+                }
+            }
+        }
+
+        @SubscribeEvent
+        fun allowAbilities(event: LivingEvent.LivingUpdateEvent){
+            if(event.entity is PlayerEntity){
+                val player = event.entity as PlayerEntity
+                val stack = accessoryInventory[1].stack
+
+                if(stack != null && stack.item == ItemHandler.poisonRing){
+                    player.abilities.allowFlying = true
                 }
             }
         }
